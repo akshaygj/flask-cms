@@ -1,0 +1,35 @@
+{% extends 'layout.html'%} {%block head%}
+<title>BJP Karnataka</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+
+{% endblock head %} {%block body%}
+<br>
+<div class="centeredHorizontally col-11">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for post in posts %}
+        <div class="post centeredHorizontally">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><a class="textPrimary" style="text-decoration:none" href="/post/{{post[0]}}">{{post[1]}}</a>
+                    </h5>
+                    {% set tags = post[2].split(',') %}
+                    {% for tag in tags %}
+                    <a href="/search/{{ tag }}">#{{ tag }}</a>
+                    {% endfor %}
+                </div>
+                <div class="card-body" style="max-height:35vh;overflow:hidden">
+                    <div class="card-text content">{{post[3]|replace('<img','<img style="width:-webkit-fill-available;"')|safe}}
+                    </div>
+                </div>
+                <!--  <img src="..." class="card-img-bottom" alt="...">-->
+                <div class="card-footer">
+                    <p class="card-text"><small class="text-muted">Last updated {{post[9]}} {{post[8]}}</small></p>
+                </div>
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,84 @@
+{% extends 'layout.html'%} {%block head%}
+<title>{{title}}</title>
+<link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/post.css') }}"
+/>
+{% endblock head %} {%block body%}
+<div class="post centeredHorizontally">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title"><a class="textPrimary" style="text-decoration:none" href="">{{title}}</a></h5>
+            {% set tags = tags.split(',') %}
+            {% for tag in tags %}
+            <a href="/search/{{ tag }}">#{{ tag }}</a>
+            {% endfor %}
+        </div>
+        <div class="card-body">
+            <div class="card-text">{{content|replace('<img','<img style="width:-webkit-fill-available;"')|safe}}</div>
+        </div>
+        <!--  <img src="..." class="card-img-bottom" alt="...">-->
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-3">
+                    <p class="card-text"><small class="text-muted">Last updated {{time}} {{date}}
+                        <br>👁️ {{views}}</small></p>
+                </div>
+                <div class="col-3">
+                    <p class="card-text"><small class="text-muted">
+                        by <a href="/user/{{author|lower}}">{{author}}</a>
+                    </small></p>
+                </div>
+                {% if author == session["userName"] %}
+                <div class="col-6">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/editpost/{{id}}"><button class="btn btn-primary me-md-2" type="button">Edit</button></a>
+                        <form method="post">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <button class="btn btn-danger" type="submit" name="postDeleteButton">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+<br><br><br>
+<!--    {% for comment in comments %}-->
+<!--    <div class="comments">-->
+<!--        <img class="profilePicture" src="{{ getProfilePicture(comment[3]) }}"/>-->
+<!--        <section class="commentUserNameContainer">-->
+<!--            <a href="/user/{{comment[3]|lower}}" class="commentUserName"-->
+<!--            >{{comment[3]}} :</a-->
+<!--            >-->
+<!--        </section>-->
+<!--        <p class="centeredHorizontally">{{comment[2]}}</p>-->
+<!--        {% if session["userName"] == comment[3] %}-->
+<!--        <form method="post">-->
+<!--            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>-->
+<!--            <input type="hidden" name="commentID" value="{{comment[0]}}"/>-->
+<!--            <button type="submit" name="commentDeleteButton">🗑️</button>-->
+<!--        </form>-->
+<!--        {% endif %} {% endfor %}-->
+<!--    </div>-->
+<!--    <form method="post" class="commentForm">-->
+<!--        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>-->
+<!--        {% if session["userName"] %} {{form.comment(class_="comment")}}-->
+<!--        <button type="submit" class="btnSubmit">comment</button>-->
+<!--        {% else %}-->
+<!--        <style>-->
+<!--            .commentForm {-->
+<!--              border: none;-->
+<!--            }-->
+<!--        </style>-->
+<!--        <small-->
+<!--        >you need-->
+<!--            <a href="/login/redirect=&post&{{id}}" class="linkLogin">login</a> for-->
+<!--            comment</small-->
+<!--        >-->
+<!--        {% endif %}-->
+<!--    </form>-->
+</div>
+{% endblock body %}

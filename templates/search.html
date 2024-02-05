@@ -1,0 +1,52 @@
+{% extends 'layout.html'%} {%block head%}
+<title>Search results for {{query}}</title>
+<link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/index.css') }}"
+/>
+<!--<link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}"/>-->
+{% endblock head %} {%block body%}
+
+<br>
+<h3>
+    search results for <span class="textPrimary">'{{query}}'</span>
+</h3>
+<!--{% if users %} {% for user in users %} {% for user in user %}-->
+<!--<div class="post centeredHorizontally userBox">-->
+<!--    <img src="{{user[4]}}"/>-->
+<!--    <a class="title textPrimary" href="/user/{{user[1]|lower}}">{{user[1]}}</a>-->
+<!--</div>-->
+<!--{% endfor %} {% endfor %} {% endif %}-->
+
+{% if posts %}
+<div class="centeredHorizontally col-md-11">
+    <div class="row row-cols-1 row-cols-md-3 g-1">
+        {% for post in posts %} {%
+        for post in post %}
+        <div class="card pe-3 ps-3" style="border-radius:0;border-bottom:2px solid rgba(0,0,0,.125);">
+            <div class="card-body pe-0 ps-0">
+                <h5 class="card-title"><a class="textPrimary" style="text-decoration:none" href="/post/{{post[0]}}">{{post[1]}}</a></h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    {% set tags = post[2].split(',') %}
+                    {% for tag in tags %}
+                    <a href="/search/{{ tag }}" style="text-decoration:none">#{{ tag }}</a>
+                    {% endfor %}</h6>
+                <div class="card-text">{{post[3]|replace('<img','<img style="width:-webkit-fill-available;"')|safe}}</div>
+            </div>
+        </div>
+
+
+        {% endfor %} {% endfor %}
+    </div>
+</div> {% endif %}
+
+{% if empty%}
+<div class="container alert alert-danger d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+        <use xlink:href="#exclamation-triangle-fill"/>
+    </svg>
+    <div class="w-100">
+        No Results Found !
+    </div>
+</div>
+{% endif %} {% endblock body %}

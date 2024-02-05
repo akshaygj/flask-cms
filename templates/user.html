@@ -1,0 +1,107 @@
+{% extends 'layout.html'%} {%block head%}
+<title>{{user[1]}}</title>
+<link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/index.css') }}"
+/>
+<link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/user.css') }}"
+/>
+{% endblock head %} {%block body%}
+<div class="container">
+    <div class="card">
+        <div class="card-body pb-0">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <div class="text-center border-end">
+                        <img src="{{user[4]}}" alt="{{user[1]}}" class="userProfilePicture">
+                        <h4 class="textPrimary font-size-20 mt-3 mb-2">{{user[1]}}</h4>
+                        <h5 class="text-muted font-size-13 mb-0">Role: {{user[5]}}</h5>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="ms-3">
+                        <div>
+                            <h4 class="card-title mb-2">User Details</h4>
+<!--                            <p class="mb-0 text-muted">Hi I'm Jansh,has been the industry's standard dummy text To an English person alteration text.</p>-->
+                        </div>
+<!--                        <section class="stats">-->
+<!--                            <p class="userRole">Role: {{user[5]}}</p>-->
+<!--                            <p class="userViews">Views: {{views}}</p>-->
+<!--                        </section>-->
+                        <section class="stats">
+                            <p class="userCreationDate">Join Date: {{user[7]}}</p>
+<!--                            <p class="userPoint">Points: {{user[6]}}</p>-->
+                        </section>
+                        <section class="stats">
+                            {% if session["userName"] == user[1] %}
+                            <a href="/accountsettings" class="btn btnLink textPrimary"
+                            >account settings</a
+                            >
+                            <a href="/dashboard/{{user[1]}}" class="btn btnLink textPrimary"
+                            >dashboard</a
+                            >
+                            {% endif %} {% if user[5] == "admin" and session["userName"] == user[1] %}
+                            <a href="/admin" class="btn btnLink textPrimary">admin panel</a>
+                            {% endif %}
+                        </section>
+                        {% if "userName" in session and session['userName'] == "{{user[1]}}"%}
+                        <a href="/dashboard/{{session['userName']}}">dashboard</a>
+                        {% endif %}
+<!--                        <div class="row my-4">-->
+<!--                            <div class="col-md-12">-->
+<!--                                <div>-->
+<!--                                    <p class="text-muted mb-2 fw-medium"><i class="mdi mdi-email-outline me-2"></i>Janshwells@probic.com-->
+<!--                                    </p>-->
+<!--                                    <p class="text-muted fw-medium mb-0"><i-->
+<!--                                            class="mdi mdi-phone-in-talk-outline me-2"></i>418-955-4703-->
+<!--                                    </p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if showPosts %}
+    <h1 class="postsText">Posts</h1>
+    {% for post in posts %}
+    <div class="post centeredHorizontally">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title"><a class="textPrimary" style="text-decoration:none" href="/post/{{post[0]}}">{{post[1]}}</a>
+                </h5>
+                {% set tags = post[2].split(',') %}
+                {% for tag in tags %}
+                <a href="/search/{{ tag }}">#{{ tag }}</a>
+                {% endfor %}
+            </div>
+            <div class="card-body" style="max-height:45vh;overflow:hidden">
+                <div class="card-text content">{{post[3]|replace('<img','<img style="width:-webkit-fill-available;"')|safe}}
+                </div>
+            </div>
+            <!--  <img src="..." class="card-img-bottom" alt="...">-->
+            <div class="card-footer">
+                <p class="card-text"><small class="text-muted">Last updated {{post[9]}} {{post[8]}}</small></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %} {% endif %} {% if showComments %}
+    <h1 class="commentsText">Comments</h1>
+    {% for comment in comments %}
+    <div class="post centeredHorizontally">
+        <div class="content" tag="content">{{comment[2]}}</div>
+        <section class="comment">
+            <p class="commentCreationDate">Creation Date: {{comment[4]}}</p>
+            <p class="commentCreationTime">Creation Time: {{comment[5]}}</p>
+        </section>
+        <a href="/post/{{comment[1]}}" class="btn btnLink textPrimary"
+        >go to post</a
+        >
+    </div>
+    {% endfor %} {% endif %}
+</div>
+{% endblock body %}

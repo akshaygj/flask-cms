@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}"/>
+
+<nav class="navbar fixed-top navbar-expand-md navbar-light bg-warning">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto ms-2">
+<!--            <a class="navbar-brand" href="/">BJP Karnataka</a>-->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link" href="#">Link</a>-->
+            <!--            </li>-->
+        </ul>
+    </div>
+    <div class="mx-auto w-100">
+        <div class="container-fluid">
+            <div class="d-flex">
+                <a class="navbar-brand" href="/">BJP Karnataka</a>
+            </div>
+        </div>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ms-auto">
+            {% if session["userName"] %}
+            <li class="nav-item">
+                <a class="nav-link" href="/createpost">Add Post</a>
+            </li>
+            <li class="nav-item dropdown me-4">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    Hi, {{session["userName"]}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="/user/{{session['userName'].lower()}}">My Profile</a></li>
+                    <!--            <li><a class="dropdown-item" href="#">Another action</a></li>-->
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="/logout" title="logout">Logout</a></li>
+                </ul>
+            </li>
+
+            {%else%}
+
+            <li class="nav-item">
+                <a class="nav-link" href="/login/redirect=&">Log In</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/signup">Sign Up</a>
+            </li>
+
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<br><br><br><br>
+<div class="container">
+    <div class="row height d-flex justify-content-center align-items-center">
+        <div class="col-md-8">
+            <div class="search-form">
+                <i class="fa fa-search"></i>
+                <input id="searchInput" type="text" class="form-control search-form-input" placeholder="Search ...">
+                <!--                <span class="left-pan"><i class="fa fa-microphone"></i></span>-->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/js/navbar.js"></script>
